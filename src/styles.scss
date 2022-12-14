@@ -1,0 +1,261 @@
+/* You can add global styles to this file, and also import other style files */
+
+$primary: #54DAFF;
+$secondary: #0f71f2;
+$greenprimary: #42d455;
+$greensecondary: #12ad0c;
+$orangeprimary: #ff9f1c;
+$orangesecondary: #ff5a00;
+$redprimary: #ff8181;
+$redsecondary: #ff1a1a;
+$white: #FFF;
+$black: #000;
+$gray: #9e9e9e;
+$lightgrey: #bababa;
+$lightergrey: #e6e6e6;
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI';
+  font-weight: lighter;
+  font-size: 1.2em;
+  background-color: $white;
+  width: 100%;
+}
+
+[data-tooltip] {
+  a {
+    text-decoration: none;
+  }
+}
+
+[data-tooltip]:before {            
+  position: absolute;
+  content: attr(data-tooltip);
+  opacity: 0;
+  transition: all 0.15s ease;
+  padding: .2em;
+  color: black;
+  border-radius: .3em;
+  white-space: pre-line;
+  font-size: .8em;
+}
+
+[data-tooltip]:hover:before {   
+  background: $lightergrey;     
+  
+  opacity: 1;
+  margin-top: -.2em;
+  margin-left: .2em;
+  white-space: pre-line;
+}
+
+.logo {
+  font-weight: bold;
+  background: -webkit-linear-gradient(45deg, $primary, $secondary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.commandTable {
+  width: 100%;
+  border-spacing: 0 .5em;
+  
+  td:first-child,
+  th:first-child {
+    background-color: $lightergrey;
+    border-radius: .3em 0 0 .3em;
+    padding: 0 .3em;
+  }
+
+  td:last-child,
+  th:last-child {
+    background-color: $lightergrey;
+    border-radius: 0 .3em .3em 0;
+  }
+
+  tr {
+    background-color: $lightergrey;
+  }
+}
+
+h1 {
+  font-weight: normal;
+  margin: 0;
+  background: -webkit-linear-gradient(115deg, $primary, $secondary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.container {
+  width: 80%;
+  margin: 0 auto;
+
+  p {
+    margin: 0;
+    padding: 0;
+  }
+
+  input[type=button] {
+    background: -webkit-linear-gradient(115deg, $primary, $secondary);
+    border: none;
+    padding: .5em;
+    margin: .2em;
+    border-radius: .3em;
+    color: $white;
+    font-weight: bold;
+    cursor: pointer;
+    align-items: center;
+
+    &:hover {
+      background: -webkit-linear-gradient(45deg, $primary, $secondary);
+    }
+
+    &:disabled {
+      background: -webkit-linear-gradient(45deg, $gray, $lightgrey);
+      cursor: default;
+    }
+  }
+
+  input[type=file] {
+    color: transparent;
+  }
+
+  input[type=file]::-webkit-file-upload-button {
+    visibility: hidden;
+  }
+
+  input[type=file]::before {
+    content: 'Import';
+    color: $white;
+    display: inline-block;
+    background: -webkit-linear-gradient(115deg, $primary, $secondary);
+    padding: .5em;
+    margin: .2em;
+    border-radius: .3em;
+    outline: none;
+    -webkit-user-select: none;
+    cursor: pointer;
+    font-weight: bold;
+  }
+
+  select {
+    border: none;
+    border-radius: .3em;
+    padding: .5em;
+    margin: .2em;
+    background: -webkit-linear-gradient(115deg, $primary, $secondary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: $primary;
+    font-weight: bold;
+    cursor: pointer;
+    align-items: center;
+  }
+
+  input[type=text], input[type=password], input[type=number] {
+    font-family: 'Segoe UI';
+    border: none;
+    outline: none;
+    font-size: .9em;
+    background-color: $lightergrey;
+    border-radius: .3em;
+    padding: .2em;
+    margin: .2em 0;
+  }
+}
+
+input[type=number] {
+  width: 5em;
+}
+
+.activeModel {
+  background: -webkit-linear-gradient(45deg, $greenprimary, $greensecondary) !important;
+}
+
+.deleteButton {
+  background: -webkit-linear-gradient(45deg, $redprimary, $redsecondary) !important;
+
+  &:hover {
+    background: -webkit-linear-gradient(115deg, $redprimary, $redsecondary) !important;
+  }
+}
+
+.greenColor {
+  background: -webkit-linear-gradient(70deg, $greenprimary, $greensecondary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.orangeColor {
+  background: -webkit-linear-gradient(70deg, $orangeprimary, $orangesecondary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.redColor {
+  background: -webkit-linear-gradient(70deg, $redprimary, $redsecondary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.commandInput {
+  border: .1em solid $secondary;
+  border-radius: .3em;
+}
+
+.titlePart {
+  font-weight: normal;
+  margin: 0 .4em 0 0;
+}
+
+.implicationText {
+  color: lighten($black, 50%);
+  float: right;
+}
+
+.section {
+  margin: 0;
+}
+
+.alertBox {
+  background: -webkit-linear-gradient(80deg, $orangeprimary, $orangesecondary);
+  border-radius: .2em;
+  display: inline-block;
+  margin-top: .3em;
+  padding: .2em;
+  color: white;
+}
+
+header {
+  background-color: $white;
+  filter: drop-shadow(0 .1em .5em #777);
+  padding: 1em 0;
+
+  a {
+    text-decoration: none;
+    color: $secondary;
+  }
+
+  a.logo {
+    font-weight: bold;
+  }
+
+  nav {
+    float: right;
+
+    ul {
+      list-style-type: none;
+      margin: 0;
+      display: flex;
+
+      li a {
+        padding: 1em;
+
+        &:hover {
+          background: darken($white, 10%);
+        }
+      }
+    }
+  }
+}

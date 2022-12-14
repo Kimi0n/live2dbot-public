@@ -1,0 +1,196 @@
+<div class="section">
+  <h1>Bot Configuration</h1>
+  <div *ngIf="tconnectionStatus != 'Connected'"><span class="alertBox">Warning: Please connect to Twitch to add a Redeem!</span></div>
+  <div *ngIf="connectionStatus != 'Connected'"><span class="alertBox">Warning: Please connect to VTube Studio to add VTube Studio related features!</span></div>
+
+  <table>
+
+    <tr *ngIf="currentAddMode == ''">
+      <input type="button" value="Add Command" (click)="switchAddMode('command')">
+      <input *ngIf="tconnectionStatus == 'Connected'" type="button" value="Add Redeem" (click)="switchAddMode('redeem')">
+    </tr>
+
+    <div class="commandInput" *ngIf="currentAddMode != ''">
+      <tr>
+        <td *ngIf="currentAddMode == 'command'"><span class="titlePart">Command name</span></td>
+        <td *ngIf="currentAddMode == 'command'"><span class="implicationText">!</span></td>
+
+        <td *ngIf="currentAddMode == 'command'">
+          <input style="width:30vw" type="text" [(ngModel)]="commandName" placeholder="commandname">
+        </td>
+
+        <td *ngIf="currentAddMode == 'redeem'"><span class="titlePart">Redeem ID</span></td>
+        <td *ngIf="currentAddMode == 'redeem'"></td>
+
+        <td *ngIf="currentAddMode == 'redeem'">
+          <span *ngIf="savedRedeemId == ''">Please redeem your custom redeem before adding</span>
+          <span *ngIf="savedRedeemId != ''">{{ savedRedeemId }}</span>
+        </td>
+
+        <td style="white-space: nowrap" *ngIf="currentAddMode != ''">
+
+          <select #outputText (change)="updateSelection(outputText.value)">
+            <option *ngFor="let commandType of commandTypes">{{ commandType }}</option>
+          </select>
+        </td>
+
+      </tr>
+
+      <tr *ngIf="currentAddMode != '' && selectedType == 'TextOutput'">
+        <td><span class="titlePart">Bot says</span></td>
+        <td></td>
+
+        <td>
+          <input style="width:30vw" type="text" [(ngModel)]="textOutputText" placeholder="Command response">
+        </td>
+
+        <td>
+          <span data-tooltip="Placeholders:&#10; ((self)) = name of the viewer who used the command.&#10;((1/100)) = random number between 1 and 100.&#10;((first choice/second choice)) = like random number but with text.&#10;((args)) = If set in command name and response; Viewer input will be placed in response.">
+            <a href="/twitch">(?)</a>
+          </span>
+        </td>
+        <td></td>
+      </tr>
+
+      <tr *ngIf="currentAddMode != '' && selectedType == 'ApiCallGetJson'">
+        <td><span class="titlePart">API Link</span></td>
+        <td></td>
+        <td style="width:30vw"><input style="width:100%" type="text" [(ngModel)]="apiLink" placeholder="http://api.example.com/"></td>
+      </tr>
+
+      <tr *ngIf="currentAddMode != '' && selectedType == 'ApiCallGetJson'">
+        <td><span class="titlePart">Return field</span></td>
+        <td></td>
+        <td style="width:30vw"><input style="width:100%" type="text" [(ngModel)]="apiField" placeholder="Response: ((examples[0].text))"></td>
+      </tr>
+
+      <tr *ngIf="currentAddMode != '' && selectedType == 'ApiCallGetAudio'">
+        <td><span class="titlePart">API Link</span></td>
+        <td></td>
+        <td style="width:30vw"><input style="width:100%" type="text" [(ngModel)]="audioApiLink" placeholder="http://api.example.com/?text=((args))"></td>
+      </tr>
+
+      <tr *ngIf="currentAddMode != '' && selectedType == 'ApiCallGetAudio'">
+        <td><span class="titlePart">Token</span></td>
+        <td><span class="implicationText"></span></td>
+        <td style="width:30vw"><input style="width:100%" type="text" [(ngModel)]="audioApiToken" placeholder="optional"></td>
+      </tr>
+
+      <tr *ngIf="currentAddMode != '' && selectedType == 'VTSModelChange'">
+        <td><span class="titlePart">Model</span></td>
+        <td></td>
+
+        <td>
+          <select #selectedModel (change)="updateModelSelection($event, selectedModel.options[selectedModel.selectedIndex].text)">
+            <option value="{{ model.modelID }}" *ngFor="let model of models">{{ model.modelName }}</option>
+          </select>
+        </td>
+
+      </tr>
+
+      <tr *ngIf="currentAddMode != '' && selectedType == 'VTSHotkeyTrigger'">
+        <td><span class="titlePart">Hotkey</span></td>
+        <td></td>
+
+        <td>
+          <select *ngIf="this.hotkeys.length > 0" #selectedHotkey (change)="updateHotkeySelection(selectedHotkey.options[selectedHotkey.selectedIndex].text)">
+            <option *ngFor="let hotkey of hotkeys">{{ hotkey.name }}</option>
+          </select>
+
+          <span *ngIf="hotkeys.length == 0" style="color:red">This model has no hotkeys!</span>
+        </td>
+        <td style="white-space: nowrap">
+          <span>
+            <input type="checkbox" name="duration" id="duration" [checked]="selectedWithHotkeyDuration" (change)="updateWithDuration()">
+            <label for="redeem">Duration  </label>
+            <input type="number" min="0" max="9999" [(ngModel)]="setHotkeyDuration" [disabled]="!selectedWithHotkeyDuration">s
+          </span>
+        </td>
+      </tr>
+
+      <tr *ngIf="currentAddMode != '' && selectedType == 'VTSGamingMode'">
+        <td><span class="titlePart">Meshgroup</span></td>
+        <td></td>
+
+        <td>
+          <select #selectedMeshGroup (change)="updateMeshGroupSelection($event)">
+            <option value="All">All</option>
+            <option value="Clear">Clear</option>
+            <option value="{{ config.groupName }}" *ngFor="let config of currentMeshConfig.meshGroups">{{ config.groupName }}</option>
+          </select>
+        </td>
+
+        <td style="white-space: nowrap">
+          <span>
+            <input type="checkbox" name="duration" id="duration" [checked]="selectedWithMeshDuration" (change)="updateWithMeshDuration()">
+            <label for="redeem">Duration  </label>
+            <input type="number" min="0" max="9999" [(ngModel)]="setMeshDuration" [disabled]="!selectedWithMeshDuration"> s
+          </span>
+        </td>
+      </tr>
+
+      <tr *ngIf="currentAddMode == 'command'">
+        <td>
+          <span class="titlePart">Cooldown</span>
+        </td>
+        <td></td>
+        <td>        
+          <input type="checkbox" name="cooldown" id="cooldown" [checked]="selectedWithCooldownDuration" (change)="updateWithCooldownDuration()">
+          <input type="number" min="0" max="9999" [(ngModel)]="setCooldownDuration" [disabled]="!selectedWithCooldownDuration"> seconds
+        </td>
+      </tr>
+
+    <input *ngIf="currentAddMode == 'command'" type="button" value="+ Add Command" (click)="saveCommand(false)">
+    <input *ngIf="currentAddMode == 'redeem'" type="button" value="+ Add Redeem" (click)="saveRedeem()">
+    <input *ngIf="currentAddMode != ''" type="button" value="Cancel" (click)="switchAddMode('')"><br>
+    </div>
+  <!--   <input type="button" value="{{ redeemScanMode ? 'Reedem Scan OFF' : 'Reedem Scan ON' }}" (click)="toggleRedeemScanner()"> -->
+    <br><input type="button" value="Export" (click)="exportCommands()">
+    <input type="file" id="cfile" accept="application/json" (change)="importCommands($event)" style="display: none">
+    <input type="button" value="Import" onclick="document.getElementById('cfile').click()">
+  </table>
+</div>
+
+<div class="section" *ngIf="commands">
+  <table class="commandTable" cellpadding="0" cellspacing="0" border="0">
+        <tr *ngFor="let command of commands.slice().reverse()">
+          <td><input type="checkbox" [checked]="command.isActive" (change)="toggleCommand(command.fullCommand)"></td>
+          <td *ngIf="command.redeemType == 'command'"><span class="titlePart">Command</span>{{ command.fullCommand }}</td>
+          <td *ngIf="command.redeemType == 'redeem'"><span class="titlePart">Redeem ID</span>{{ command.fullCommand }}</td>
+
+          <td>
+            <span class="titlePart">Type</span> {{ command.commandType }}
+            <span *ngIf="command.cooldown != 0">({{ command.cooldown }}s)</span>
+          </td>
+
+          <td *ngIf="command.commandSpecifics.outputText"><span class="titlePart">Text output</span>{{ command.commandSpecifics.outputText }}</td>
+          <td *ngIf="command.commandSpecifics.modelName"><span class="titlePart">Model</span>{{ command.commandSpecifics.modelName }}</td>
+          <td *ngIf="command.commandSpecifics.isAllCommands"></td>
+
+          <td *ngIf="command.commandSpecifics.link">
+            <span class="titlePart">API Link</span>{{ command.commandSpecifics.link }}
+            <span class="titlePart">Return field</span>{{ command.commandSpecifics.field }}
+          </td>
+
+          <td *ngIf="command.commandSpecifics.audioLink">
+            <span class="titlePart">API Link</span>{{ command.commandSpecifics.audioLink }}
+            <span *ngIf="command.commandSpecifics.audioToken" class="titlePart">Token</span>
+            <span *ngIf="command.commandSpecifics.audioToken">
+              {{ (command.commandSpecifics.audioToken.length > 10)? (command.commandSpecifics.audioToken | slice:0:10)+'****':(command.commandSpecifics.audioToken) }}
+            </span>
+          </td>
+
+          <td *ngIf="command.commandSpecifics.hotkeyName">
+            <span class="titlePart">Hotkey name</span>{{ command.commandSpecifics.hotkeyName }}
+            <span *ngIf="command.commandSpecifics.hotkeyDuration">({{ command.commandSpecifics.hotkeyDuration }}s)</span>
+          </td>
+
+          <td *ngIf="command.commandSpecifics.configName">
+            <span class="titlePart">Config name</span>{{ command.commandSpecifics.configName }}
+            <span *ngIf="command.commandSpecifics.meshDuration">({{ command.commandSpecifics.meshDuration }}s)</span>
+          </td>
+
+          <td><input style="float: right" type="button" class="deleteButton" value="Delete" (click)="deleteCommand(command.fullCommand)"></td>
+        </tr>
+  </table>
+</div>

@@ -1,0 +1,72 @@
+<div class="section">
+  <h1>VTube Studio</h1>
+
+  <table>
+    <tr>
+      <td><span class="titlePart">Connection Status</span></td>
+
+      <td [ngClass]="{
+        'greenColor': connectionStatus == 'Connected',
+        'orangeColor': connectionStatus == 'Connecting...',
+        'redColor': connectionStatus == 'Connection failed'
+      }">{{ connectionStatus }}</td>
+
+    </tr>
+
+    <tr>
+      <td *ngIf="connectionMessage != ''"><span class="titlePart">Warning</span></td>
+      <td *ngIf="connectionMessage != ''">{{ connectionMessage }}</td>
+    </tr>
+
+    <tr>
+      <td><span class="titlePart">Port</span></td>
+      <td><input type="number" min="1024" max="20000" [(ngModel)]="vtsPort"></td>
+    </tr>
+
+    <tr>
+      <td><input [disabled]="connectionStatus == 'Connected'" type="button" value="Connect" (click)="connectToVts()"></td>
+    </tr>
+
+  </table>
+
+</div>
+
+<div class="section">
+  <h1>Twitch</h1>
+
+  <table>
+
+    <tr>
+      <td><span class="titlePart">Connection Status</span></td>
+      <td [ngClass]="{
+        'greenColor': tconnectionStatus == 'Connected'
+      }">{{ tconnectionStatus }}</td>
+    </tr>
+
+    <tr>
+      <td><span class="titlePart">Username (Bot)</span></td>
+      <td><input type="text" [(ngModel)]="username">&nbsp;
+        <span data-tooltip="Twitch account name of your Bot. You can user your normal streamer account, but it is recommended to have a seperate account for the bot">
+          <a href="/home">(?)</a>
+        </span>
+      </td>
+    </tr>
+
+    <tr>
+      <td><span class="titlePart">Oauth token (Bot)</span></td>
+      <td><input type="password" [(ngModel)]="token">&nbsp;&nbsp;<a href="https://twitchapps.com/tmi/" target="_blank">Get</a></td>
+    </tr>
+
+    <tr>
+      <td><span class="titlePart">Username (Streamer)</span></td>
+      <td><input type="text" [(ngModel)]="targetChannel"></td>
+    </tr>
+  </table>
+
+  <input *ngIf="tconnectionStatus == 'Disconnected'" type="button" value="Connect" (click)="connectToTwitch()" [disabled]="username == '' || targetChannel == '' || token == ''">
+  <input *ngIf="tconnectionStatus == 'Connected'" type="button" value="Disconnect" class="deleteButton" (click)="disconnectFromTwitch()">
+
+  <p *ngIf="tconnectionStatus == 'Connected'">
+    <input [(ngModel)]="sendText" #chatInput style="width: 100%" type="text" placeholder="Enter to chat" (keyup.enter)="sendToChat(chatInput.value)" >
+  </p>
+</div>

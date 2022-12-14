@@ -1,0 +1,51 @@
+<div class="section" *ngIf="models">
+  <h1>Models</h1>
+  <p>Click to switch to a different model.</p>
+
+  <input #Model type="button" id="{{ model.modelID }}"
+  [ngClass]="{'activeModel': model.modelLoaded}"
+  value="{{ model.modelName }}" *ngFor="let model of models"
+  (click)="sendLoadModelRequest(Model.id)">
+</div>
+
+<div class="section" *ngIf="hotkeys.length > 0">
+  <h1>Hotkeys</h1>
+  <p>Click to trigger a hotkey.</p>
+
+    <ng-container *ngFor="let hotkey of hotkeys">
+      <input *ngIf="hotkey.name != ''" #Hotkey type="button" id="{{ hotkey.hotkeyID }}"
+      value="{{ hotkey.name }}"
+      (click)="sendHotkeyTriggerRequest(Hotkey.id)">
+    </ng-container>
+</div>
+
+<div class="section">
+  <h1>Gaming mode</h1>
+  <input style="width:30vw" type="text" required placeholder="Enter name" [(ngModel)]="artmeshGroupName"><br>
+  <input type="button" value="Select Artmeshes" (click)="sendArtmeshRequest()" [disabled]="artmeshGroupName == ''">
+
+  <div>
+    <div>
+      <table style="border-radius: .3em;background-color: #e6e6e6">
+
+        <tr>
+          <td>
+            <input type="button" value="All" (click)="sendAllTintRequest(false)">
+            <input type="button" value="Clear" (click)="sendAllTintRequest(true)">
+          </td>
+          <td></td>
+        </tr>
+
+        <tr *ngFor="let group of currentMeshConfig.meshGroups">
+          <td>{{ group.groupName }}</td>
+          <td>
+            <input #meshBtn type="button" value="On" (click)="makeGroupRgb(group.groupName)">
+            <input #meshBtn type="button" value="Edit" (click)="editMeshGroup(group.groupName)">
+            <input #meshBtn class="deleteButton" type="button" value="Delete" (click)="deleteMeshGroup(group.groupName)">
+          </td>
+        </tr>
+
+      </table>
+    </div>
+  </div>
+</div>

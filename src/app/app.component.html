@@ -1,0 +1,17 @@
+<header>
+  <div class="container">
+    <a routerLink="/" class="logo">Live2DBot</a>
+    <nav>
+      <ul>
+        <li><a routerLink="/">Home</a></li>
+        <li *ngIf="connectionStatus == 'Connected'"><a routerLink="/vts">VTube Studio</a></li>
+        <li><a routerLink="/twitch">Config</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+
+<div class="container">
+  <router-outlet></router-outlet>
+</div>
