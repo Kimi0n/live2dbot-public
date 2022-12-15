@@ -28,7 +28,7 @@ No microtransactions, no subscriptions, 100% free.
 ## Changelog
 ### 0.4.3 sleepypurin
 Features:
-    - You can now edit commands and redeems.
+- You can now edit commands and redeems.
 
 ## Feature ideas that may be realized at some point
 - Editing commands.
