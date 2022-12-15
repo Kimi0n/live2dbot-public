@@ -1,4 +1,4 @@
-# Live2DBot v0.4.2sleepypurin
+# Live2DBot v0.4.3sleepypurin
 
 An all-in-one Twitch bot for VTubers with VTube Studio integration. 
 
@@ -26,7 +26,9 @@ No microtransactions, no subscriptions, 100% free.
 - A modern Chromium based browser or Firefox.
 
 ## Changelog
-This will have something written in it in the future.
+### 0.4.3 sleepypurin
+Features:
+    - You can now edit commands and redeems.
 
 ## Feature ideas that may be realized at some point
 - Editing commands.
