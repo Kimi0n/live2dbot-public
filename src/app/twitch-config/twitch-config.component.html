@@ -29,7 +29,7 @@
 
         <td style="white-space: nowrap" *ngIf="currentAddMode != ''">
 
-          <select #outputText (change)="updateSelection(outputText.value)">
+          <select #outputText (change)="updateSelection(outputText.value)" [(ngModel)]="selectedType">
             <option *ngFor="let commandType of commandTypes">{{ commandType }}</option>
           </select>
         </td>
@@ -81,8 +81,9 @@
         <td></td>
 
         <td>
-          <select #selectedModel (change)="updateModelSelection($event, selectedModel.options[selectedModel.selectedIndex].text)">
-            <option value="{{ model.modelID }}" *ngFor="let model of models">{{ model.modelName }}</option>
+          <select #selectedModel (change)="updateModelSelection($event, selectedModel.options[selectedModel.selectedIndex].text)" [(ngModel)]="selectedModelName">
+            <!-- TODO: Pepega selectedModelName two-way-binding not working for some reason -->
+            <option value="{{ model.modelID }}" *ngFor="let model of models">{{ model.modelName }}</option> 
           </select>
         </td>
 
@@ -93,7 +94,7 @@
         <td></td>
 
         <td>
-          <select *ngIf="this.hotkeys.length > 0" #selectedHotkey (change)="updateHotkeySelection(selectedHotkey.options[selectedHotkey.selectedIndex].text)">
+          <select *ngIf="this.hotkeys.length > 0" #selectedHotkey (change)="updateHotkeySelection(selectedHotkey.options[selectedHotkey.selectedIndex].text)" [(ngModel)]="selectedHotkeyName">
             <option *ngFor="let hotkey of hotkeys">{{ hotkey.name }}</option>
           </select>
 
@@ -102,6 +103,7 @@
         <td style="white-space: nowrap">
           <span>
             <input type="checkbox" name="duration" id="duration" [checked]="selectedWithHotkeyDuration" (change)="updateWithDuration()">
+            <!-- TODO: Checkbox doesn't update with edit REEEEE -->
             <label for="redeem">Duration  </label>
             <input type="number" min="0" max="9999" [(ngModel)]="setHotkeyDuration" [disabled]="!selectedWithHotkeyDuration">s
           </span>
@@ -113,7 +115,7 @@
         <td></td>
 
         <td>
-          <select #selectedMeshGroup (change)="updateMeshGroupSelection($event)">
+          <select #selectedMeshGroup (change)="updateMeshGroupSelection($event)" [(ngModel)]="selectedMeshConfig">
             <option value="All">All</option>
             <option value="Clear">Clear</option>
             <option value="{{ config.groupName }}" *ngFor="let config of currentMeshConfig.meshGroups">{{ config.groupName }}</option>
@@ -123,6 +125,7 @@
         <td style="white-space: nowrap">
           <span>
             <input type="checkbox" name="duration" id="duration" [checked]="selectedWithMeshDuration" (change)="updateWithMeshDuration()">
+            <!-- TODO: Checkbox doesn't update with edit REEEEE -->
             <label for="redeem">Duration  </label>
             <input type="number" min="0" max="9999" [(ngModel)]="setMeshDuration" [disabled]="!selectedWithMeshDuration"> s
           </span>
@@ -136,6 +139,7 @@
         <td></td>
         <td>        
           <input type="checkbox" name="cooldown" id="cooldown" [checked]="selectedWithCooldownDuration" (change)="updateWithCooldownDuration()">
+          <!-- TODO: Checkbox doesn't update with edit REEEEE -->
           <input type="number" min="0" max="9999" [(ngModel)]="setCooldownDuration" [disabled]="!selectedWithCooldownDuration"> seconds
         </td>
       </tr>
@@ -144,7 +148,6 @@
     <input *ngIf="currentAddMode == 'redeem'" type="button" value="+ Add Redeem" (click)="saveRedeem()">
     <input *ngIf="currentAddMode != ''" type="button" value="Cancel" (click)="switchAddMode('')"><br>
     </div>
-  <!--   <input type="button" value="{{ redeemScanMode ? 'Reedem Scan OFF' : 'Reedem Scan ON' }}" (click)="toggleRedeemScanner()"> -->
     <br><input type="button" value="Export" (click)="exportCommands()">
     <input type="file" id="cfile" accept="application/json" (change)="importCommands($event)" style="display: none">
     <input type="button" value="Import" onclick="document.getElementById('cfile').click()">
@@ -190,7 +193,10 @@
             <span *ngIf="command.commandSpecifics.meshDuration">({{ command.commandSpecifics.meshDuration }}s)</span>
           </td>
 
-          <td><input style="float: right" type="button" class="deleteButton" value="Delete" (click)="deleteCommand(command.fullCommand)"></td>
+          <td>
+            <input style="float: right" type="button" class="deleteButton" value="Delete" (click)="deleteCommand(command.fullCommand)">
+            <input style="float: right" type="button" value="Edit" (click)="editCommand(command)">
+          </td>
         </tr>
   </table>
 </div>
