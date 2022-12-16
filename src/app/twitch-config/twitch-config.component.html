@@ -1,12 +1,12 @@
 <div class="section">
   <h1>Bot Configuration</h1>
-  <div *ngIf="tconnectionStatus != 'Connected'"><span class="alertBox">Warning: Please connect to Twitch to add a Redeem!</span></div>
-  <div *ngIf="connectionStatus != 'Connected'"><span class="alertBox">Warning: Please connect to VTube Studio to add VTube Studio related features!</span></div>
+  <div *ngIf="tconnectionStatus != 'Connected'"><span class="alertBox">Please connect to Twitch to add a Redeem!</span></div>
+  <div *ngIf="connectionStatus != 'Connected'"><span class="alertBox">Please connect to VTube Studio to add VTube Studio related features!</span></div>
 
   <table>
 
     <tr *ngIf="currentAddMode == ''">
-      <input type="button" value="Add Command" (click)="switchAddMode('command')">
+      <input type="button" class="edgeButton" value="Add Command" (click)="switchAddMode('command')">
       <input *ngIf="tconnectionStatus == 'Connected'" type="button" value="Add Redeem" (click)="switchAddMode('redeem')">
     </tr>
 
