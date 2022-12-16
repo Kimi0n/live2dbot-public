@@ -3,6 +3,7 @@ import { Subject } from 'rxjs';
 import * as tmi from 'tmi.js';
 import { VtsCommService } from './vts-comm.service';
 import { HttpClient } from '@angular/common/http';
+import { TwitchCommand } from './pojos/twitch-command';
 
 @Injectable({
   providedIn: 'root'
@@ -168,7 +169,9 @@ export class TwitchCommService {
   }
 
   addCommand(o: string) {
-    this.commands.push(JSON.parse(o));
+    const newCommand = JSON.parse(o);
+    this.removeCommand(newCommand.fullCommand);
+    this.commands.push(newCommand);
     this.commandsChange.next(this.commands);
     this.writeCommandsToLocal();
   }

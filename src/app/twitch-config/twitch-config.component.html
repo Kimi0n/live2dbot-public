@@ -1,12 +1,12 @@
 <div class="section">
   <h1>Bot Configuration</h1>
-  <div *ngIf="tconnectionStatus != 'Connected'"><span class="alertBox">Warning: Please connect to Twitch to add a Redeem!</span></div>
-  <div *ngIf="connectionStatus != 'Connected'"><span class="alertBox">Warning: Please connect to VTube Studio to add VTube Studio related features!</span></div>
+  <div *ngIf="tconnectionStatus != 'Connected'"><span class="alertBox">Please connect to Twitch to add a Redeem!</span></div>
+  <div *ngIf="connectionStatus != 'Connected'"><span class="alertBox">Please connect to VTube Studio to add VTube Studio related features!</span></div>
 
   <table>
 
     <tr *ngIf="currentAddMode == ''">
-      <input type="button" value="Add Command" (click)="switchAddMode('command')">
+      <input type="button" class="edgeButton" value="Add Command" (click)="switchAddMode('command')">
       <input *ngIf="tconnectionStatus == 'Connected'" type="button" value="Add Redeem" (click)="switchAddMode('redeem')">
     </tr>
 
@@ -29,7 +29,7 @@
 
         <td style="white-space: nowrap" *ngIf="currentAddMode != ''">
 
-          <select #outputText (change)="updateSelection(outputText.value)">
+          <select #outputText (change)="updateSelection(outputText.value)" [(ngModel)]="selectedType">
             <option *ngFor="let commandType of commandTypes">{{ commandType }}</option>
           </select>
         </td>
@@ -81,8 +81,8 @@
         <td></td>
 
         <td>
-          <select #selectedModel (change)="updateModelSelection($event, selectedModel.options[selectedModel.selectedIndex].text)">
-            <option value="{{ model.modelID }}" *ngFor="let model of models">{{ model.modelName }}</option>
+          <select #selectedModel (change)="updateModelSelection($event, selectedModel.options[selectedModel.selectedIndex].text)" [(ngModel)]="selectedModelId">
+            <option value="{{ model.modelID }}" *ngFor="let model of models">{{ model.modelName }}</option> 
           </select>
         </td>
 
@@ -93,7 +93,7 @@
         <td></td>
 
         <td>
-          <select *ngIf="this.hotkeys.length > 0" #selectedHotkey (change)="updateHotkeySelection(selectedHotkey.options[selectedHotkey.selectedIndex].text)">
+          <select *ngIf="this.hotkeys.length > 0" #selectedHotkey (change)="updateHotkeySelection(selectedHotkey.options[selectedHotkey.selectedIndex].text)" [(ngModel)]="selectedHotkeyName">
             <option *ngFor="let hotkey of hotkeys">{{ hotkey.name }}</option>
           </select>
 
@@ -113,7 +113,7 @@
         <td></td>
 
         <td>
-          <select #selectedMeshGroup (change)="updateMeshGroupSelection($event)">
+          <select #selectedMeshGroup (change)="updateMeshGroupSelection($event)" [(ngModel)]="selectedMeshConfig">
             <option value="All">All</option>
             <option value="Clear">Clear</option>
             <option value="{{ config.groupName }}" *ngFor="let config of currentMeshConfig.meshGroups">{{ config.groupName }}</option>
@@ -144,7 +144,6 @@
     <input *ngIf="currentAddMode == 'redeem'" type="button" value="+ Add Redeem" (click)="saveRedeem()">
     <input *ngIf="currentAddMode != ''" type="button" value="Cancel" (click)="switchAddMode('')"><br>
     </div>
-  <!--   <input type="button" value="{{ redeemScanMode ? 'Reedem Scan OFF' : 'Reedem Scan ON' }}" (click)="toggleRedeemScanner()"> -->
     <br><input type="button" value="Export" (click)="exportCommands()">
     <input type="file" id="cfile" accept="application/json" (change)="importCommands($event)" style="display: none">
     <input type="button" value="Import" onclick="document.getElementById('cfile').click()">
@@ -190,7 +189,10 @@
             <span *ngIf="command.commandSpecifics.meshDuration">({{ command.commandSpecifics.meshDuration }}s)</span>
           </td>
 
-          <td><input style="float: right" type="button" class="deleteButton" value="Delete" (click)="deleteCommand(command.fullCommand)"></td>
+          <td>
+            <input style="float: right" type="button" class="deleteButton" value="Delete" (click)="deleteCommand(command.fullCommand)">
+            <input style="float: right" type="button" value="Edit" (click)="editCommand(command)">
+          </td>
         </tr>
   </table>
 </div>

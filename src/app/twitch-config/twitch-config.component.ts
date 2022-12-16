@@ -96,6 +96,8 @@ export class TwitchConfigComponent implements OnInit {
 
     this.modelsSub = vtsComm.modelListChange.subscribe((value) => {
       this.models = value;
+      this.selectedModelName = (this.models.length > 0) ? this.models[0].name : '';
+      this.selectedModelId = (this.models.length > 0) ? this.models[0].modelID : '';
     });
 
     this.hotkeysSub = this.vtsComm.hotkeysChange.subscribe((value) => {
@@ -203,6 +205,76 @@ export class TwitchConfigComponent implements OnInit {
     this.twitchComm.removeCommand(sCommand);
   }
 
+  //Puts the appropriate information of the selected command/redeem in the config box
+  editCommand(command: any) {
+
+    if(command.redeemType == 'command') {
+      this.switchAddMode('command');
+      this.commandName = command.fullCommand.slice(1);
+    }
+
+    if(command.redeemType == 'redeem' && this.tconnectionStatus == 'Connected') {
+      this.switchAddMode('redeem');
+      this.savedRedeemId = command.commandName;
+    }
+    
+    this.updateSelection(command.commandType);
+    this.textOutputText = (command.commandSpecifics.outputText) ? command.commandSpecifics.outputText : '';  
+    this.apiLink = (command.commandSpecifics.link) ? command.commandSpecifics.link : '';  
+    this.apiField = (command.commandSpecifics.field) ? command.commandSpecifics.field : '';  
+    this.audioApiLink = (command.commandSpecifics.audioLink) ? command.commandSpecifics.audioLink : ''; 
+    this.audioApiToken =  (command.commandSpecifics.audioToken) ? command.commandSpecifics.audioToken : ''; 
+
+    if(command.commandSpecifics.modelName && command.commandSpecifics.modelId) {
+      this.updateModelSelectionInternal(command.commandSpecifics.modelId, command.commandSpecifics.modelName);
+    }
+
+    if(command.commandSpecifics.hotkeyName) {
+      this.updateHotkeySelection(command.commandSpecifics.hotkeyName);
+    }
+    
+    if(command.commandSpecifics.hotkeyDuration) {
+      this.setHotkeyDuration = command.commandSpecifics.hotkeyDuration;
+      this.selectedWithHotkeyDuration = false;
+
+      if(parseInt(command.commandSpecifics.hotkeyDuration) > 0) {
+        this.selectedWithHotkeyDuration = true;
+      }
+    } else {
+      this.setHotkeyDuration = "0";
+      this.selectedWithHotkeyDuration = false;
+      
+    }
+
+    if(command.commandSpecifics.meshDuration) {
+      this.setMeshDuration = command.commandSpecifics.meshDuration;
+      this.selectedWithMeshDuration = false;
+
+      if(parseInt(command.commandSpecifics.meshDuration) > 0) {
+        this.selectedWithMeshDuration = true;
+      }
+    } else {
+      this.setMeshDuration = "0";
+      this.selectedWithMeshDuration = false;
+    }
+
+    if(command.cooldown) {
+      this.setCooldownDuration = command.cooldown;
+      this.selectedWithCooldownDuration = false;
+
+      if(parseInt(command.cooldown) > 0) {
+        this.selectedWithCooldownDuration = true;
+      }
+    } else {
+      this.setCooldownDuration = "0";
+      this.selectedWithCooldownDuration = false;
+    }
+
+    if(command.commandSpecifics.configName) {
+      this.updateMeshGroupSelectionInternal(command.commandSpecifics.configName);
+    }
+  }
+
   updateSelection(value: string) {
     this.selectedType = value;
   }
@@ -212,12 +284,21 @@ export class TwitchConfigComponent implements OnInit {
     this.selectedModelId = event.target.value;
   }
 
+  updateModelSelectionInternal(id: string, modelName: string) {
+    this.selectedModelName = modelName;
+    this.selectedModelId = id;
+  }
+
   updateHotkeySelection(hotkeyName: string) {
     this.selectedHotkeyName = hotkeyName;
   }
 
   updateMeshGroupSelection(event: any) {
     this.selectedMeshConfig = event.target.value;
+  }
+
+  updateMeshGroupSelectionInternal(meshGroupName: string) {
+    this.selectedMeshConfig = meshGroupName;
   }
 
   updateVtsCommandAvailability() {
@@ -305,5 +386,8 @@ export class TwitchConfigComponent implements OnInit {
     this.apiField = '';
     this.audioApiLink = '';
     this.audioApiToken = '';
+    this.selectedWithHotkeyDuration = false;
+    this.selectedWithCooldownDuration = false;
+    this.selectedWithMeshDuration = false;
   }
 }

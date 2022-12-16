@@ -1,6 +1,6 @@
 {
   "name": "live2dbot",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "scripts": {
     "ng": "ng",
     "start": "ng serve -o",
@@ -8,7 +8,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "make": "ng build && copy /Y server.js dist\\live2dbot\\ && nexe dist\\live2dbot\\server.js -r \"dist/live2dbot/*.*\" --build -o dist\\live2dbot_0.4.2beta.exe"
+    "make": "ng build && copy /Y server.js dist\\live2dbot\\ && nexe dist\\live2dbot\\server.js -r \"dist/live2dbot/*.*\" --build -o dist\\live2dbot_0.4.3beta.exe"
   },
   "private": true,
   "dependencies": {
