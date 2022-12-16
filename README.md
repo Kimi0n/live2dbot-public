@@ -1,6 +1,6 @@
 # Live2DBot v0.4.3sleepypurin
 
-An all-in-one Twitch bot for VTubers with VTube Studio integration. 
+An all-in-one Twitch bot for VTubers with VTube Studio integration. Download the program [here](https://github.com/Kimi0n/live2dbot-public/releases).
 
 ## Features
 ### Vtube Studio integration
@@ -25,13 +25,7 @@ No microtransactions, no subscriptions, 100% free.
 - VTube Studio 1.22.0 or newer.
 - A modern Chromium based browser or Firefox.
 
-## Changelog
-### 0.4.3 sleepypurin
-Features:
-- You can now edit commands and redeems.
-
 ## Feature ideas that may be realized at some point
-- Editing commands.
 - Sound redeems (single mp3/wav file and folders - playlist/shuffle).
 - Time based commands like a reminder.
 - Counter variables.
@@ -43,7 +37,7 @@ Features:
 - Command grouping, moving, editing.
 - Called commands being able to disable/enable other commands.
 
-## Current bugs/limitations
+## Known bugs/limitations
 - Import only works once unless you refresh the page.
 - Wrong credentials on the Twitch login doesn't give an error message.
 - Navigation bar looks weird on narrow screen widths (<570px).
@@ -55,8 +49,8 @@ Just clone the repo and run `npm install` on it (requires nodejs). You can run t
 To build it as an exe file, run `npm run make`. The first build will take about ~20 minutes because of nexe and its dependencies. The exe file will be in the `dist` folder.
 
 The nexe building process also requires the following dependencies:
-- Visual Studio 2022 with "Desktop development with C++" and it's default selected optional stuff.
-- NASM https://www.nasm.us/pub/nasm/releasebuilds/2.15.04/ (install as administrator).
+- Visual Studio with "Desktop development with C++" and its default selected optional stuff.
+- [NASM](https://www.nasm.us/pub/nasm/releasebuilds/2.15.04/) (install as administrator).
 - Python 3.8.5 (make sure python --version returns that version specifically).
 
 ## Contributions
