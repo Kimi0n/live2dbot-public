@@ -81,8 +81,7 @@
         <td></td>
 
         <td>
-          <select #selectedModel (change)="updateModelSelection($event, selectedModel.options[selectedModel.selectedIndex].text)" [(ngModel)]="selectedModelName">
-            <!-- TODO: Pepega selectedModelName two-way-binding not working for some reason -->
+          <select #selectedModel (change)="updateModelSelection($event, selectedModel.options[selectedModel.selectedIndex].text)" [(ngModel)]="selectedModelId">
             <option value="{{ model.modelID }}" *ngFor="let model of models">{{ model.modelName }}</option> 
           </select>
         </td>
@@ -103,7 +102,6 @@
         <td style="white-space: nowrap">
           <span>
             <input type="checkbox" name="duration" id="duration" [checked]="selectedWithHotkeyDuration" (change)="updateWithDuration()">
-            <!-- TODO: Checkbox doesn't update with edit REEEEE -->
             <label for="redeem">Duration  </label>
             <input type="number" min="0" max="9999" [(ngModel)]="setHotkeyDuration" [disabled]="!selectedWithHotkeyDuration">s
           </span>
@@ -125,7 +123,6 @@
         <td style="white-space: nowrap">
           <span>
             <input type="checkbox" name="duration" id="duration" [checked]="selectedWithMeshDuration" (change)="updateWithMeshDuration()">
-            <!-- TODO: Checkbox doesn't update with edit REEEEE -->
             <label for="redeem">Duration  </label>
             <input type="number" min="0" max="9999" [(ngModel)]="setMeshDuration" [disabled]="!selectedWithMeshDuration"> s
           </span>
@@ -139,7 +136,6 @@
         <td></td>
         <td>        
           <input type="checkbox" name="cooldown" id="cooldown" [checked]="selectedWithCooldownDuration" (change)="updateWithCooldownDuration()">
-          <!-- TODO: Checkbox doesn't update with edit REEEEE -->
           <input type="number" min="0" max="9999" [(ngModel)]="setCooldownDuration" [disabled]="!selectedWithCooldownDuration"> seconds
         </td>
       </tr>

@@ -170,13 +170,7 @@ export class TwitchCommService {
 
   addCommand(o: string) {
     const newCommand = JSON.parse(o);
-
-    this.commands.forEach((command, index) => { //TODO: Optimize each instance of this block
-      if(command.fullCommand == newCommand.fullCommand) {
-        this.commands.splice(index, 1);
-      }
-    });
-
+    this.removeCommand(newCommand.fullCommand);
     this.commands.push(newCommand);
     this.commandsChange.next(this.commands);
     this.writeCommandsToLocal();

@@ -96,6 +96,8 @@ export class TwitchConfigComponent implements OnInit {
 
     this.modelsSub = vtsComm.modelListChange.subscribe((value) => {
       this.models = value;
+      this.selectedModelName = (this.models.length > 0) ? this.models[0].name : '';
+      this.selectedModelId = (this.models.length > 0) ? this.models[0].modelID : '';
     });
 
     this.hotkeysSub = this.vtsComm.hotkeysChange.subscribe((value) => {
@@ -205,22 +207,17 @@ export class TwitchConfigComponent implements OnInit {
 
   //Puts the appropriate information of the selected command/redeem in the config box
   editCommand(command: any) {
-    console.log(command); //TODO: Last - Remove 
 
     if(command.redeemType == 'command') {
       this.switchAddMode('command');
       this.commandName = command.fullCommand.slice(1);
     }
 
-    //TODO: hide edit button for redeems when Twitch is not connected.
     if(command.redeemType == 'redeem' && this.tconnectionStatus == 'Connected') {
-      this.switchAddMode('redeem'); //TODO: redeem scan on, check if save/cancel turn it back off
+      this.switchAddMode('redeem');
       this.savedRedeemId = command.commandName;
     }
     
-    //TODO: hide edit on VTS commands when VTS isn't connected.
-
-    //Put data in add command/redeem field 
     this.updateSelection(command.commandType);
     this.textOutputText = (command.commandSpecifics.outputText) ? command.commandSpecifics.outputText : '';  
     this.apiLink = (command.commandSpecifics.link) ? command.commandSpecifics.link : '';  
@@ -235,8 +232,7 @@ export class TwitchConfigComponent implements OnInit {
     if(command.commandSpecifics.hotkeyName) {
       this.updateHotkeySelection(command.commandSpecifics.hotkeyName);
     }
-
-    //TODO_START: Optimize down
+    
     if(command.commandSpecifics.hotkeyDuration) {
       this.setHotkeyDuration = command.commandSpecifics.hotkeyDuration;
       this.selectedWithHotkeyDuration = false;
@@ -246,6 +242,8 @@ export class TwitchConfigComponent implements OnInit {
       }
     } else {
       this.setHotkeyDuration = "0";
+      this.selectedWithHotkeyDuration = false;
+      
     }
 
     if(command.commandSpecifics.meshDuration) {
@@ -257,6 +255,7 @@ export class TwitchConfigComponent implements OnInit {
       }
     } else {
       this.setMeshDuration = "0";
+      this.selectedWithMeshDuration = false;
     }
 
     if(command.cooldown) {
@@ -268,14 +267,12 @@ export class TwitchConfigComponent implements OnInit {
       }
     } else {
       this.setCooldownDuration = "0";
+      this.selectedWithCooldownDuration = false;
     }
-    //TODO_END: Optimize down
 
     if(command.commandSpecifics.configName) {
       this.updateMeshGroupSelectionInternal(command.commandSpecifics.configName);
     }
-    
-    //TODO: option select return to default if nothing found
   }
 
   updateSelection(value: string) {
@@ -392,6 +389,5 @@ export class TwitchConfigComponent implements OnInit {
     this.selectedWithHotkeyDuration = false;
     this.selectedWithCooldownDuration = false;
     this.selectedWithMeshDuration = false;
-    //TODO: Add the final fields
   }
 }
